@@ -36,6 +36,7 @@ runs:
 
         # DEBUG BEGIN
         echo "jobs_json:"$'\n'"${jobs_json}"
+        set -x
         # DEBUG END
 
         conclusion_check="$(
