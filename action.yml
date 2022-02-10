@@ -47,4 +47,4 @@ runs:
 
         echo >&2 "Unsuccessful jobs:"
         # Excluding this job, be sure that all of the other jobs have a conclusion of 'success'.
-        echo "${jobs_json}" | jq '.jobs | map(select(.id != '"${GITHUB_JOB_ID}"')) | map(select(.conclusion != "success")) | map({.id, .name, .status, .conclusion}) '
+        echo "${jobs_json}" | jq '.jobs | map(select(.id != '"${GITHUB_JOB_ID}"')) | map(select(.conclusion != "success")) | map({id, name, status, conclusion}) '
