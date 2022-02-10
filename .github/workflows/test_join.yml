@@ -1,0 +1,35 @@
+name: Job Resolution Tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+  job1:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Debug
+      shell: bash
+      run: |
+        echo "Job 1"
+        exit 1
+
+  job2:
+    runs-on: ubuntu-20.04
+    env:
+      CC: clang
+    steps:
+    - name: Debug
+      shell: bash
+      run: |
+        echo "Job 2"
+
+  all_tests:
+    runs-on: ubuntu-20.04
+    needs: [job1, job2]
+    if: ${{ always() }}
+    steps:
+      - uses: ./
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+
