@@ -19,11 +19,14 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
       run: |
+        # By the time this action runs, all of the depdendent jobs should have a status of completed or cancelled.
+
         # DEBUG BEGIN
         echo "Start previous job check"
         echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}"
         echo "GITHUB_RUN_ID: ${GITHUB_RUN_ID}"
         echo "GITHUB_RUN_ATTEMPT: ${GITHUB_RUN_ATTEMPT}"
+        echo "GITHUB_JOB_ID: ${GITHUB_JOB_ID}"
         # DEBUG END
 
         # Retrieve the jobs for the current run.
@@ -35,4 +38,13 @@ runs:
         echo "jobs_json:"$'\n'"${jobs_json}"
         # DEBUG END
 
+        conclusion_check="$(
+          # Excluding this job, be sure that all of the other jobs have a conclusion of 'success'.
+          echo "${jobs_json}" | jq '.jobs | map(select(.id != '"${GITHUB_JOB_ID}"')) | all(.conclusion == "success") '
+        )"
 
+        [[ "${conclusion_check}" == true ]] && exit
+
+        echo >&2 "Unsuccessful jobs:"
+        # Excluding this job, be sure that all of the other jobs have a conclusion of 'success'.
+        echo "${jobs_json}" | jq '.jobs | map(select(.id != '"${GITHUB_JOB_ID}"')) | map(select(.conclusion != "success")) | map({.id, .name, .status, .conclusion}) '
