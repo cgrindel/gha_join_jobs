@@ -33,23 +33,23 @@ runs:
         jobs_json="$( 
           gh api "/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/attempts/${GITHUB_RUN_ATTEMPT}/jobs" 
         )"
+
+        # Exclude this job
         filtered_jobs_json="$(
-          # Excluding this job, be sure that all of the other jobs have a conclusion of 'success'.
           echo "${jobs_json}" | jq '.jobs | map(select(.name != "'"${GITHUB_JOB}"'"))'
         )"
 
-        # DEBUG BEGIN
-        echo "filtered_jobs_json:"$'\n'"${filtered_jobs_json}"
-        set -x
-        # DEBUG END
-
+        # Be sure that all of the other jobs have a conclusion of 'success'.
         conclusion_check="$(
-          # Excluding this job, be sure that all of the other jobs have a conclusion of 'success'.
           echo "${filtered_jobs_json}" | jq 'all(.conclusion == "success") '
         )"
 
+        # If all is well, we are done.
         [[ "${conclusion_check}" == true ]] && exit
 
-        echo >&2 "Unsuccessful jobs:"
-        # Excluding this job, be sure that all of the other jobs have a conclusion of 'success'.
-        echo "${filtered_jobs_json}" | jq 'map(select(.conclusion != "success")) | map({id, name, status, conclusion}) '
+        # Extract the jobs that did not succeed
+        unsuccessful_jobs="$(
+          echo "${filtered_jobs_json}" | jq 'map(select(.conclusion != "success")) | map({id, name, status, conclusion}) ' >&2
+        )"
+        echo >&2 "Unsuccessful jobs:"$'\n'"${unsuccessful_jobs}"
+        exit 1
