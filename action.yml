@@ -1,0 +1,38 @@
+name: "Join Multiple Jobs"
+description: "This action will fail if any of the monitored jobs fail."
+
+inputs:
+  # job_names:
+  #   required: true
+  #   type: string
+  #   description: "A comma-separate list of "
+  github_token:
+    description: The Github token to authenticate PR operations.
+    required: true
+
+
+runs:
+  using: composite
+  steps:
+    - name: Check Previous Jobs
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github_token }}
+      run: |
+        # DEBUG BEGIN
+        echo "Start previous job check"
+        echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}"
+        echo "GITHUB_RUN_ID: ${GITHUB_RUN_ID}"
+        echo "GITHUB_RUN_ATTEMPT: ${GITHUB_RUN_ATTEMPT}"
+        # DEBUG END
+
+        # Retrieve the jobs for the current run.
+        jobs_json="$( 
+          gh api "/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/attempts/${GITHUB_RUN_ATTEMPT}/jobs" 
+        )"
+
+        # DEBUG BEGIN
+        echo "jobs_json:"$'\n'"${jobs_json}"
+        # DEBUG END
+
+
