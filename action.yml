@@ -51,6 +51,7 @@ runs:
           filtered_jobs_jq+=' | map(select(.name | IN($job_names[])))'
           filtered_jobs_jq_cmd+=( --argjson job_names "${JOB_NAMES}" )
         fi
+        filtered_jobs_jq_cmd+=( "${filtered_jobs_jq}" )
 
         # Retrieve the jobs of interest.
         filtered_jobs_json="$(
