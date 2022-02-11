@@ -24,9 +24,22 @@ gh_actions_api_jq_sh="$(rlocation "${gh_actions_api_jq_sh_location}")" || \
 source "${gh_actions_api_jq_sh}"
 
 jobs_json_location=cgrindel_gha_join_jobs/tests/gh_actions_api_jq_tests/jobs.json
-jobs_json="$(rlocation "${jobs_json_location}")" || \
+jobs_json_path="$(rlocation "${jobs_json_location}")" || \
   (echo >&2 "Failed to locate ${jobs_json_location}" && exit 1)
+
 
 # MARK - Test
 
-fail "IMPLEMENT ME!"
+jobs_json="$(< "${jobs_json_path}")"
+
+results="$(
+  get_filtered_jobs_json \
+    --job all_tests \
+    --jobs_json "${jobs_json}" 
+)"
+count=$(echo "${results}" | jq -r 'length')
+assert_equal 2 ${count} "Expected jobs count."
+
+# DEBUG BEGIN
+fail "FINISH ME"
+# DEBUG END
