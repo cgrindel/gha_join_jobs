@@ -33,6 +33,10 @@ runs:
           gh api "/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/attempts/${GITHUB_RUN_ATTEMPT}/jobs" 
         )"
 
+        # DEBUG BEGIN
+        set -x
+        # DEBUG END
+
         filtered_jobs_jq_cmd=( jq )
         filtered_jobs_jq='.jobs | map(select(.name != "'"${GITHUB_JOB}"'"))'
         if [[ -n "${JOB_NAMES}" ]]; then
