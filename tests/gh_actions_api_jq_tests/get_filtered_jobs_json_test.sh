@@ -23,6 +23,9 @@ gh_actions_api_jq_sh="$(rlocation "${gh_actions_api_jq_sh_location}")" || \
   (echo >&2 "Failed to locate ${gh_actions_api_jq_sh_location}" && exit 1)
 source "${gh_actions_api_jq_sh}"
 
+jobs_json_location=cgrindel_gha_join_jobs/tests/gh_actions_api_jq_tests/jobs.json
+jobs_json="$(rlocation "${jobs_json_location}")" || \
+  (echo >&2 "Failed to locate ${jobs_json_location}" && exit 1)
 
 # MARK - Test
 

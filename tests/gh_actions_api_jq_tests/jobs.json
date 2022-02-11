@@ -1,0 +1,160 @@
+{
+  "total_count": 3,
+  "jobs": [
+    {
+      "id": 5147818663,
+      "run_id": 1826183852,
+      "run_url": "https://api.github.com/repos/cgrindel/gha_join_jobs/actions/runs/1826183852",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOG0ujI88AAAABMtV6pw",
+      "head_sha": "6f9ee9122315be58ee832848811f9655ec4984cf",
+      "url": "https://api.github.com/repos/cgrindel/gha_join_jobs/actions/jobs/5147818663",
+      "html_url": "https://github.com/cgrindel/gha_join_jobs/runs/5147818663?check_suite_focus=true",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2022-02-10T21:13:55Z",
+      "completed_at": "2022-02-10T21:13:55Z",
+      "name": "job2",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2022-02-10T21:13:55.000Z",
+          "completed_at": "2022-02-10T21:13:55.000Z"
+        },
+        {
+          "name": "Debug",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2022-02-10T21:13:55.000Z",
+          "completed_at": "2022-02-10T21:13:55.000Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2022-02-10T21:13:55.000Z",
+          "completed_at": "2022-02-10T21:13:55.000Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/cgrindel/gha_join_jobs/check-runs/5147818663",
+      "labels": [
+        "ubuntu-20.04"
+      ],
+      "runner_id": 3,
+      "runner_name": "GitHub Actions 3",
+      "runner_group_id": 2,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 5147818720,
+      "run_id": 1826183852,
+      "run_url": "https://api.github.com/repos/cgrindel/gha_join_jobs/actions/runs/1826183852",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOG0ujI88AAAABMtV64A",
+      "head_sha": "6f9ee9122315be58ee832848811f9655ec4984cf",
+      "url": "https://api.github.com/repos/cgrindel/gha_join_jobs/actions/jobs/5147818720",
+      "html_url": "https://github.com/cgrindel/gha_join_jobs/runs/5147818720?check_suite_focus=true",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2022-02-10T21:13:55Z",
+      "completed_at": "2022-02-10T21:13:56Z",
+      "name": "job1",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2022-02-10T21:13:55.000Z",
+          "completed_at": "2022-02-10T21:13:55.000Z"
+        },
+        {
+          "name": "Debug",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 2,
+          "started_at": "2022-02-10T21:13:55.000Z",
+          "completed_at": "2022-02-10T21:13:56.000Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2022-02-10T21:13:56.000Z",
+          "completed_at": "2022-02-10T21:13:56.000Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/cgrindel/gha_join_jobs/check-runs/5147818720",
+      "labels": [
+        "ubuntu-20.04"
+      ],
+      "runner_id": 1,
+      "runner_name": "Hosted Agent",
+      "runner_group_id": 2,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 5147821342,
+      "run_id": 1826183852,
+      "run_url": "https://api.github.com/repos/cgrindel/gha_join_jobs/actions/runs/1826183852",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOG0ujI88AAAABMtWFHg",
+      "head_sha": "6f9ee9122315be58ee832848811f9655ec4984cf",
+      "url": "https://api.github.com/repos/cgrindel/gha_join_jobs/actions/jobs/5147821342",
+      "html_url": "https://github.com/cgrindel/gha_join_jobs/runs/5147821342?check_suite_focus=true",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2022-02-10T21:14:09Z",
+      "completed_at": null,
+      "name": "all_tests",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2022-02-10T21:14:09.000Z",
+          "completed_at": "2022-02-10T21:14:10.000Z"
+        },
+        {
+          "name": "Run actions/checkout@v2",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2022-02-10T21:14:10.000Z",
+          "completed_at": "2022-02-10T21:14:10.000Z"
+        },
+        {
+          "name": "Run /./",
+          "status": "pending",
+          "conclusion": null,
+          "number": 3,
+          "started_at": "2022-02-10T21:14:10.000Z",
+          "completed_at": null
+        },
+        {
+          "name": "Post Run actions/checkout@v2",
+          "status": "queued",
+          "conclusion": null,
+          "number": 6,
+          "started_at": null,
+          "completed_at": null
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/cgrindel/gha_join_jobs/check-runs/5147821342",
+      "labels": [
+        "ubuntu-20.04"
+      ],
+      "runner_id": 1,
+      "runner_name": "Hosted Agent",
+      "runner_group_id": 2,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

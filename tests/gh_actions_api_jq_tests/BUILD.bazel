@@ -15,6 +15,9 @@ sh_test(
 sh_test(
     name = "get_filtered_jobs_json_test",
     srcs = ["get_filtered_jobs_json_test.sh"],
+    data = [
+        "jobs.json",
+    ],
     deps = [
         "//libs:gh_actions_api_jq",
         "@bazel_tools//tools/bash/runfiles",
