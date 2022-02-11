@@ -2,10 +2,8 @@ name: "Join Multiple Jobs"
 description: "This action will fail if any of the monitored jobs fail."
 
 inputs:
-  # job_names:
-  #   required: true
-  #   type: string
-  #   description: "A comma-separate list of "
+  job_names:
+    type: string
   github_token:
     description: The Github token to authenticate PR operations.
     required: true
@@ -18,6 +16,7 @@ runs:
       shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
+        JOB_NAMES: ${{ inputs.job_names }}
       run: |
         # By the time this action runs, all of the depdendent jobs should have a status of completed or cancelled.
 
@@ -34,9 +33,25 @@ runs:
           gh api "/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/attempts/${GITHUB_RUN_ATTEMPT}/jobs" 
         )"
 
-        # Exclude this job
+        filtered_jobs_jq_cmd=( jq )
+        filtered_jobs_jq='.jobs | map(select(.name != "'"${GITHUB_JOB}"'"))'
+        if [[ -n "${JOB_NAMES}" ]]; then
+          # Ensure that job names does not contain our JOB name
+          contains_our_job="$(
+            jq --argjson job_names "${JOB_NAMES}" --arg current_job "${GITHUB_JOB}" '$current_job IN($job_names[])'
+          )"
+          [[ "${contains_our_job}" == true ]] && \
+            echo >&2 "This job name (${GITHUB_JOB}) is included in your jobs list." && \
+            exit 1
+
+          filtered_jobs_jq+=' | map(select(.name | IN($job_names[])))'
+          filtered_jobs_jq_cmd+=( --argjson job_names "${JOB_NAMES}" )
+        fi
+
+        # Retrieve the jobs of interest.
         filtered_jobs_json="$(
-          echo "${jobs_json}" | jq '.jobs | map(select(.name != "'"${GITHUB_JOB}"'"))'
+          # echo "${jobs_json}" | jq '.jobs | map(select(.name != "'"${GITHUB_JOB}"'"))'
+          echo "${jobs_json}" | "${filtered_jobs_jq_cmd[@]}"
         )"
 
         # Be sure that all of the other jobs have a conclusion of 'success'.

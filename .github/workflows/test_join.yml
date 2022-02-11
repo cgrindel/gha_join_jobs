@@ -23,6 +23,15 @@ jobs:
       run: |
         echo "Job 2"
 
+  job3:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Debug
+      shell: bash
+      run: |
+        echo "Job 3"
+        exit 1
+
   all_tests:
     runs-on: ubuntu-20.04
     needs: [job1, job2]
@@ -31,6 +40,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./
         with:
+          job_names: '["job1", "job2"]'
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
 
