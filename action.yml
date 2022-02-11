@@ -42,7 +42,7 @@ runs:
         if [[ -n "${JOB_NAMES}" ]]; then
           # Ensure that job names does not contain our JOB name
           contains_our_job="$(
-            jq --argjson job_names "${JOB_NAMES}" --arg current_job "${GITHUB_JOB}" '$current_job IN($job_names[])'
+            jq -n --argjson job_names "${JOB_NAMES}" --arg current_job "${GITHUB_JOB}" '$current_job | IN($job_names[])'
           )"
           [[ "${contains_our_job}" == true ]] && \
             echo >&2 "This job name (${GITHUB_JOB}) is included in your jobs list." && \
