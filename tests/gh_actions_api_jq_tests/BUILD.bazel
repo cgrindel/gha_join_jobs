@@ -11,3 +11,13 @@ sh_test(
         "@cgrindel_bazel_starlib//shlib/lib:assertions",
     ],
 )
+
+sh_test(
+    name = "get_filtered_jobs_json_test",
+    srcs = ["get_filtered_jobs_json_test.sh"],
+    deps = [
+        "//libs:gh_actions_api_jq",
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_starlib//shlib/lib:assertions",
+    ],
+)
