@@ -1,0 +1,11 @@
+load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
+
+bzlformat_pkg(name = "bzlformat")
+
+sh_binary(
+    name = "check_jobs",
+    srcs = ["check_jobs.sh"],
+    deps = [
+        "//libs:gh_actions_api_jq",
+    ],
+)

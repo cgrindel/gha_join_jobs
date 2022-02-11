@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+
+# --- begin runfiles.bash initialization v2 ---
+# Copy-pasted from the Bazel Bash runfiles library v2.
+set -uo pipefail; f=bazel_tools/tools/bash/runfiles/runfiles.bash
+source "${RUNFILES_DIR:-/dev/null}/$f" 2>/dev/null || \
+  source "$(grep -sm1 "^$f " "${RUNFILES_MANIFEST_FILE:-/dev/null}" | cut -f2- -d' ')" 2>/dev/null || \
+  source "$0.runfiles/$f" 2>/dev/null || \
+  source "$(grep -sm1 "^$f " "$0.runfiles_manifest" | cut -f2- -d' ')" 2>/dev/null || \
+  source "$(grep -sm1 "^$f " "$0.exe.runfiles_manifest" | cut -f2- -d' ')" 2>/dev/null || \
+  { echo>&2 "ERROR: cannot find $f"; exit 1; }; f=; set -e
+# --- end runfiles.bash initialization v2 ---
+
+# MARK - Locate Deps
+
+fail_sh_location=cgrindel_bazel_starlib/shlib/lib/fail.sh
+fail_sh="$(rlocation "${fail_sh_location}")" || \
+  (echo >&2 "Failed to locate ${fail_sh_location}" && exit 1)
+source "${fail_sh}"
+
+env_sh_location=cgrindel_bazel_starlib/shlib/lib/env.sh
+env_sh="$(rlocation "${env_sh_location}")" || \
+  (echo >&2 "Failed to locate ${env_sh_location}" && exit 1)
+source "${env_sh}"
+
+
+# MARK - Check for required software
+
+is_installed jq || fail "Could not find jq for JSON parsing."
+
+
+# MARK - Process Args
+
+# We are expecting to be run in a GitHub Actions workflow
+github_repository="${GITHUB_REPOSITORY:-}"
+github_run_id="${GITHUB_RUN_ID:-}"
+github_run_attempt="${GITHUB_RUN_ATTEMPT:-}"
+github_job="${GITHUB_JOB:-}"
+
+args=()
+while (("$#")); do
+  case "${1}" in
+    "--job_names")
+      job_names="${2}"
+      shift 2
+      ;;
+    *)
+      args+=("${1}")
+      shift 1
+      ;;
+  esac
+done
+
+[[ -z "${github_repository:-}" ]] && fail "Expected a value for github_repository."
+[[ -z "${github_run_id:-}" ]] && fail "Expected a value for github_run_id."
+[[ -z "${github_run_attempt:-}" ]] && fail "Expected a value for github_run_attempt."
+[[ -z "${github_job:-}" ]] && fail "Expected a value for github_job."
+
+# MARK - Check Jobs
+
+# Retrieve the jobs for the current run.
+jobs_json="$( 
+  gh api "/repos/${github_repository}/actions/runs/${github_run_id}/attempts/${github_run_attempt}/jobs" 
+)"
+
+# filtered_jobs_jq_cmd=( jq )
+# filtered_jobs_jq="$( get_filtered_jobs_jq "${github_job}" )"
+# if [[ -n "${job_names:-}" ]]; then
+#   # Ensure that job names does not contain our JOB name
+#   is_item_in_json_array "${github_job}" "${job_names}" && \
+#     echo >&2 "This job name (${GITHUB_JOB}) is included in your jobs list." && \
+#     exit 1
+
+#   filtered_jobs_jq+=' | map(select(.name | IN($job_names[])))'
+#   filtered_jobs_jq_cmd+=( --argjson job_names "${job_names}" )
+# fi
+# filtered_jobs_jq_cmd+=( "${filtered_jobs_jq}" )
+
+# Retrieve the jobs of interest.
+filter_jobs_cmd=( get_filtered_jobs_json --job "${github_job}" --job_json "${jobs_json}" )
+[[ -n "${job_names:-}" ]] && filter_jobs_cmd+=( --job_names "${job_names}" )
+filtered_jobs_json="$( "${filter_jobs_cmd[@]}" )"
+
+# Be sure that all of the other jobs have a conclusion of 'success'.
+conclusion_check="$(
+  echo "${filtered_jobs_json}" | jq 'all(.conclusion == "success") '
+)"
+
+# If all is well, we are done.
+[[ "${conclusion_check}" == true ]] && exit
+
+# Extract the jobs that did not succeed
+unsuccessful_jobs="$(
+  echo "${filtered_jobs_json}" | jq 'map(select(.conclusion != "success")) | map({id, name, status, conclusion}) '
+)"
+echo >&2 "Unsuccessful jobs:"$'\n'"${unsuccessful_jobs}"
+exit 1
