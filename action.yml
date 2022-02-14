@@ -33,7 +33,8 @@ runs:
       run: |
         repo_dir="${PWD}"
         # DEBUG BEGIN
-        tree -a
+        tree >&2
+        tree >&2 .github
         set -x
         # DEBUG END
         cd "${GHA_JOIN_JOBS_PATH}"
