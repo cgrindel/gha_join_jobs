@@ -34,7 +34,7 @@ jobs_json="$(< "${jobs_json_path}")"
 
 results="$(
   get_filtered_jobs_json \
-    --job all_tests \
+    --current_job all_tests \
     --jobs_json "${jobs_json}" 
 )"
 count=$(echo "${results}" | jq -r 'length')

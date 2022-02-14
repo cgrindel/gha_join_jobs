@@ -17,7 +17,7 @@ get_filtered_jobs_json() {
   local args=()
   while (("$#")); do
     case "${1}" in
-      "--job")
+      "--current_job")
         local current_job="${2}"
         shift 2
         ;;
