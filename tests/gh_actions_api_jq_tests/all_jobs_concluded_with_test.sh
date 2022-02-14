@@ -18,7 +18,24 @@ assertions_sh="$(rlocation "${assertions_sh_location}")" || \
   (echo >&2 "Failed to locate ${assertions_sh_location}" && exit 1)
 source "${assertions_sh}"
 
+gh_actions_api_jq_sh_location=cgrindel_gha_join_jobs/libs/gh_actions_api_jq.sh
+gh_actions_api_jq_sh="$(rlocation "${gh_actions_api_jq_sh_location}")" || \
+  (echo >&2 "Failed to locate ${gh_actions_api_jq_sh_location}" && exit 1)
+source "${gh_actions_api_jq_sh}"
+
 # MARK - Test
 
-fail "IMPLEMENT ME!"
+jobs_json='[{"conclusion":"success"},{"conclusion":"success"}]'
+all_jobs_concluded_with "success" "${jobs_json}" || fail "Expected all to be success."
 
+jobs_json='[{"conclusion":"cancelled"},{"conclusion":"cancelled"}]'
+all_jobs_concluded_with "cancelled" "${jobs_json}" || fail "Expected all to be cancelled."
+
+jobs_json='[{"conclusion":"success"},{"conclusion":"cancelled"}]'
+all_jobs_concluded_with "success" "${jobs_json}" && fail "Expected failure."
+
+jobs_json='[{"conclusion":"cancelled"},{"conclusion":"success"}]'
+all_jobs_concluded_with "success" "${jobs_json}" && fail "Expected failure."
+
+# End on something pleasant
+echo "All is well."
