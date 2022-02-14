@@ -32,15 +32,24 @@ jobs:
         echo "Job 3"
         exit 1
 
+  # all_tests:
+  #   runs-on: ubuntu-20.04
+  #   needs: [job1, job2]
+  #   if: ${{ always() }}
+  #   steps:
+  #     - uses: ./
+  #       with:
+  #         job_names: '["job1", "job2"]'
+  #         github_token: ${{ secrets.GITHUB_TOKEN }}
+
+
   all_tests:
     runs-on: ubuntu-20.04
-    needs: [job1, job2]
+    needs: [job1, job2, job3]
     if: ${{ always() }}
     steps:
-      - uses: actions/checkout@v2
       - uses: ./
         with:
-          job_names: '["job1", "job2"]'
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
 

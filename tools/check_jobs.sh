@@ -73,9 +73,6 @@ filtered_jobs_json="$( "${filter_jobs_cmd[@]}" )"
 all_jobs_concluded_with "success" "${filtered_jobs_json}" && exit
 
 # Extract the jobs that did not succeed
-unsuccessful_jobs="$(
-  # echo "${filtered_jobs_json}" | jq 'map(select(.conclusion != "success")) | map({id, name, status, conclusion}) '
-  get_unsuccessful_jobs_summary "${filtered_jobs_json}"
-)"
+unsuccessful_jobs="$( get_unsuccessful_jobs_summary "${filtered_jobs_json}" )"
 echo >&2 "Unsuccessful jobs:"$'\n'"${unsuccessful_jobs}"
 exit 1
