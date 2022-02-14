@@ -29,6 +29,10 @@ get_filtered_jobs_json() {
         local job_names="${2}"
         shift 2
         ;;
+      *--)
+        echo >&2 "Unrecognized flag. ${1}"
+        return 1
+        ;;
       *)
         args+=("${1}")
         shift 1
@@ -52,4 +56,19 @@ get_filtered_jobs_json() {
   fi
   jq_cmd+=( "${jq_src}" )
   echo "${jobs_json}" | "${jq_cmd[@]}"
+}
+
+all_jobs_concluded_with() {
+  local status="${1}"
+  local jobs_array_json="${2}"
+
+  local conclusion_check="$(
+    echo "${jobs_array_json}" | jq 'all(.conclusion == "'"${status}"'")'
+  )"
+
+  # If all are the same conclusion, then return success
+  [[ "${conclusion_check}" == true ]] && return
+
+  # Otherwise, return failure
+  return 1
 }

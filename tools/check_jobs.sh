@@ -63,31 +63,14 @@ jobs_json="$(
   gh api "/repos/${github_repository}/actions/runs/${github_run_id}/attempts/${github_run_attempt}/jobs" 
 )"
 
-# filtered_jobs_jq_cmd=( jq )
-# filtered_jobs_jq="$( get_filtered_jobs_jq "${github_job}" )"
-# if [[ -n "${job_names:-}" ]]; then
-#   # Ensure that job names does not contain our JOB name
-#   is_item_in_json_array "${github_job}" "${job_names}" && \
-#     echo >&2 "This job name (${GITHUB_JOB}) is included in your jobs list." && \
-#     exit 1
-
-#   filtered_jobs_jq+=' | map(select(.name | IN($job_names[])))'
-#   filtered_jobs_jq_cmd+=( --argjson job_names "${job_names}" )
-# fi
-# filtered_jobs_jq_cmd+=( "${filtered_jobs_jq}" )
-
 # Retrieve the jobs of interest.
-filter_jobs_cmd=( get_filtered_jobs_json --job "${github_job}" --job_json "${jobs_json}" )
+filter_jobs_cmd=( get_filtered_jobs_json --current_job "${github_job}" --job_json "${jobs_json}" )
 [[ -n "${job_names:-}" ]] && filter_jobs_cmd+=( --job_names "${job_names}" )
 filtered_jobs_json="$( "${filter_jobs_cmd[@]}" )"
 
 # Be sure that all of the other jobs have a conclusion of 'success'.
-conclusion_check="$(
-  echo "${filtered_jobs_json}" | jq 'all(.conclusion == "success") '
-)"
-
-# If all is well, we are done.
-[[ "${conclusion_check}" == true ]] && exit
+# If so, exit.
+all_jobs_concluded_with "success" "${filtered_jobs_json}" && exit
 
 # Extract the jobs that did not succeed
 unsuccessful_jobs="$(
