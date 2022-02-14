@@ -2,37 +2,37 @@ name: "Join Multiple Jobs"
 description: "This action will fail if any of the monitored jobs fail."
 
 inputs:
-  # job_names:
-  #   required: true
-  #   type: string
-  #   description: "A comma-separate list of "
+  job_names:
+    type: string
   github_token:
     description: The Github token to authenticate PR operations.
     required: true
+  checkout_ref:
+    type: string
+    default: v1
+  checkout_path:
+    type: string
+    default: .github/actions/gha_join_jobs
 
 
 runs:
   using: composite
   steps:
+    - uses: actions/checkout@v2
+      with:
+        repository: cgrindel/gha_join_jobs
+        ref: ${{ inputs.checkout_ref }}
+        path: ${{ inputs.checkout_path }}
+
     - name: Check Previous Jobs
       shell: bash
       env:
+        GHA_JOIN_JOBS_PATH: ${{ inputs.checkout_path }}
         GITHUB_TOKEN: ${{ inputs.github_token }}
+        JOB_NAMES: ${{ inputs.job_names }}
       run: |
-        # DEBUG BEGIN
-        echo "Start previous job check"
-        echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}"
-        echo "GITHUB_RUN_ID: ${GITHUB_RUN_ID}"
-        echo "GITHUB_RUN_ATTEMPT: ${GITHUB_RUN_ATTEMPT}"
-        # DEBUG END
-
-        # Retrieve the jobs for the current run.
-        jobs_json="$( 
-          gh api "/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/attempts/${GITHUB_RUN_ATTEMPT}/jobs" 
-        )"
-
-        # DEBUG BEGIN
-        echo "jobs_json:"$'\n'"${jobs_json}"
-        # DEBUG END
-
-
+        repo_dir="${PWD}"
+        cd "${GHA_JOIN_JOBS_PATH}"
+        bazel_cmd=( bazelisk run //tools:check_jobs -- )
+        [[ -n "${JOB_NAMES:-}" ]] && bazel_cmd+=( --job_names "${JOB_NAMES}" )
+        "${bazel_cmd[@]}"

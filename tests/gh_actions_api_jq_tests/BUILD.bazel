@@ -1,0 +1,46 @@
+load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
+
+bzlformat_pkg(name = "bzlformat")
+
+sh_test(
+    name = "is_item_in_json_array_test",
+    srcs = ["is_item_in_json_array_test.sh"],
+    deps = [
+        "//libs:gh_actions_api_jq",
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_starlib//shlib/lib:assertions",
+    ],
+)
+
+sh_test(
+    name = "get_filtered_jobs_json_test",
+    srcs = ["get_filtered_jobs_json_test.sh"],
+    data = [
+        "jobs.json",
+    ],
+    deps = [
+        "//libs:gh_actions_api_jq",
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_starlib//shlib/lib:assertions",
+    ],
+)
+
+sh_test(
+    name = "all_jobs_concluded_with_test",
+    srcs = ["all_jobs_concluded_with_test.sh"],
+    deps = [
+        "//libs:gh_actions_api_jq",
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_starlib//shlib/lib:assertions",
+    ],
+)
+
+sh_test(
+    name = "get_unsuccessful_jobs_summary_test",
+    srcs = ["get_unsuccessful_jobs_summary_test.sh"],
+    deps = [
+        "//libs:gh_actions_api_jq",
+        "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_starlib//shlib/lib:assertions",
+    ],
+)
