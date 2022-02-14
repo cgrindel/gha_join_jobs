@@ -23,6 +23,11 @@ env_sh="$(rlocation "${env_sh_location}")" || \
   (echo >&2 "Failed to locate ${env_sh_location}" && exit 1)
 source "${env_sh}"
 
+gh_actions_api_jq_sh_location=cgrindel_gha_join_jobs/libs/gh_actions_api_jq.sh
+gh_actions_api_jq_sh="$(rlocation "${gh_actions_api_jq_sh_location}")" || \
+  (echo >&2 "Failed to locate ${gh_actions_api_jq_sh_location}" && exit 1)
+source "${gh_actions_api_jq_sh}"
+
 
 # MARK - Check for required software
 
