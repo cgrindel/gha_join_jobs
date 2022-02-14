@@ -36,6 +36,9 @@ get_filtered_jobs_json() {
     esac
   done
 
+  [[ -z "${current_job:-}" ]] && echo >&2 "Expected a value for current_job." && return 1
+  [[ -z "${jobs_json:-}" ]] && echo >&2 "Expected a value for jobs_json." && return 1 
+
   local jq_cmd=( jq )
   local jq_src='.jobs | map(select(.name != "'"${current_job}"'"))'
   if [[ -n "${job_names:-}" ]]; then
