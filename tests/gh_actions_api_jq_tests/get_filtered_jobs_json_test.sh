@@ -38,8 +38,17 @@ results="$(
     --jobs_json "${jobs_json}" 
 )"
 count=$(echo "${results}" | jq -r 'length')
-assert_equal 2 ${count} "Expected jobs count."
+assert_equal 2 ${count} "Expected jobs count without job_names."
+actual_job_names="$( echo "${results}" | jq -c 'map(.name) | sort' )"
+assert_equal '["job1","job2"]' "${actual_job_names}" "Expected job names without job_names."
 
-# DEBUG BEGIN
-fail "FINISH ME"
-# DEBUG END
+results="$(
+  get_filtered_jobs_json \
+    --current_job all_tests \
+    --jobs_json "${jobs_json}" \
+    --job_names '["job2"]'
+)"
+count=$(echo "${results}" | jq -r 'length')
+assert_equal 1 ${count} "Expected jobs count with job_names."
+actual_job_names="$( echo "${results}" | jq -c 'map(.name) | sort' )"
+assert_equal '["job2"]' "${actual_job_names}" "Expected job names with job_names."
