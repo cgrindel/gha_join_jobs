@@ -7,5 +7,6 @@ sh_binary(
     srcs = ["check_jobs.sh"],
     deps = [
         "//libs:gh_actions_api_jq",
+        "@bazel_tools//tools/bash/runfiles",
     ],
 )
