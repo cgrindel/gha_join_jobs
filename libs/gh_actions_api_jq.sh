@@ -72,3 +72,9 @@ all_jobs_concluded_with() {
   # Otherwise, return failure
   return 1
 }
+
+get_unsuccessful_jobs_summary() {
+  local jobs_array_json="${1}"
+  echo "${jobs_array_json}" | \
+    jq 'map(select(.conclusion != "success")) | map({id, name, status, conclusion})'
+}
