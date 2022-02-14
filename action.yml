@@ -33,5 +33,6 @@ runs:
       run: |
         repo_dir="${PWD}"
         cd "${GHA_JOIN_JOBS_PATH}"
-        bazelisk run //tools:check_jobs -- \
-          --job_names "${JOB_NAMES}"
+        bazel_cmd=( bazelisk run //tools:check_jobs -- )
+        [[ -n "${JOB_NAMES:-}" ]] && bazel_cmd+=( --job_names "${JOB_NAMES}" )
+        "${bazel_cmd[@]}"
