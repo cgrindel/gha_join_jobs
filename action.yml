@@ -32,11 +32,6 @@ runs:
         JOB_NAMES: ${{ inputs.job_names }}
       run: |
         repo_dir="${PWD}"
-        # DEBUG BEGIN
-        tree >&2
-        tree >&2 .github
-        set -x
-        # DEBUG END
         cd "${GHA_JOIN_JOBS_PATH}"
         bazel_cmd=( bazelisk run //tools:check_jobs -- )
         [[ -n "${JOB_NAMES:-}" ]] && bazel_cmd+=( --job_names "${JOB_NAMES}" )

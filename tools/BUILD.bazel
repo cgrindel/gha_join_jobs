@@ -8,5 +8,7 @@ sh_binary(
     deps = [
         "//libs:gh_actions_api_jq",
         "@bazel_tools//tools/bash/runfiles",
+        "@cgrindel_bazel_starlib//shlib/lib:env",
+        "@cgrindel_bazel_starlib//shlib/lib:fail",
     ],
 )
