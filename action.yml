@@ -34,6 +34,7 @@ runs:
         repo_dir="${PWD}"
         # DEBUG BEGIN
         tree -a
+        set -x
         # DEBUG END
         cd "${GHA_JOIN_JOBS_PATH}"
         bazel_cmd=( bazelisk run //tools:check_jobs -- )
