@@ -1,3 +1,5 @@
+"""Dependencies for gha_join_jobs."""
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
@@ -15,9 +17,9 @@ def gha_join_jobs_dependencies():
 
     http_archive(
         name = "cgrindel_bazel_starlib",
-        sha256 = "57453a08f932633375e630c1553f9e93c1edebe733836d4a6de6fd37c7869680",
-        strip_prefix = "bazel-starlib-0.4.1",
+        sha256 = "8ac3e45dc237121283d70506497ec39feb5092af9a57bfe34f7abf4a6bd2ebaa",
+        strip_prefix = "bazel-starlib-0.6.0",
         urls = [
-            "http://github.com/cgrindel/bazel-starlib/archive/v0.4.1.tar.gz",
+            "http://github.com/cgrindel/bazel-starlib/archive/v0.6.0.tar.gz",
         ],
     )
