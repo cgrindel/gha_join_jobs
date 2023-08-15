@@ -6,7 +6,7 @@ on:
 
 jobs:
   ubuntu_build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       CC: clang
     steps:
@@ -20,7 +20,7 @@ jobs:
         bazelisk test //...
 
   another_job: 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Succeed
         shell: bash
@@ -28,7 +28,7 @@ jobs:
           echo "All is well!"
 
   all_tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: [ubuntu_build, another_job]
     if: ${{ always() }}
     steps:
