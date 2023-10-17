@@ -10,7 +10,7 @@ jobs:
     env:
       CC: clang
     steps:
-    - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
+    - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
     - uses: cgrindel/gha_set_up_bazel@v1
       with:
         repo_name: gha_join_jobs
@@ -32,7 +32,7 @@ jobs:
     needs: [ubuntu_build, another_job]
     if: ${{ always() }}
     steps:
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
       - uses: ./
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
