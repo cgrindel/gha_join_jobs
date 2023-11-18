@@ -64,9 +64,11 @@ done
 # MARK - Check Jobs
 
 # Retrieve the jobs for the current run.
-jobs_json="$( 
-  gh api "/repos/${github_repository}/actions/runs/${github_run_id}/attempts/${github_run_attempt}/jobs" 
-)"
+# NOTE: The results from the API are paginated. Passing the --paginate flag
+# instructs the GH CLI to collect all of the results and return them as a
+# single array.
+api_url="/repos/${github_repository}/actions/runs/${github_run_id}/attempts/${github_run_attempt}/jobs"
+jobs_json="$( gh api --paginate "${api_url}" )"
 
 # Retrieve the jobs of interest.
 filter_jobs_cmd=( get_filtered_jobs_json --current_job "${github_job}" --job_json "${jobs_json}" )
