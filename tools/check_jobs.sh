@@ -71,6 +71,9 @@ api_url="/repos/${github_repository}/actions/runs/${github_run_id}/attempts/${gi
 jobs_json="$( gh api --paginate "${api_url}" )"
 
 # DEBUG BEGIN
+echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") GITHUB_WORKFLOW: ${GITHUB_WORKFLOW}" 
+echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") GITHUB_WORKFLOW_REF: ${GITHUB_WORKFLOW_REF}" 
+echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") GITHUB_WORKFLOW_SHA: ${GITHUB_WORKFLOW_SHA}" 
 echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") api_url: ${api_url}" 
 echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") jobs_json: ${jobs_json}" 
 # DEBUG END
