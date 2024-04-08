@@ -73,6 +73,7 @@ jobs_json="$( gh api --paginate "${api_url}" )"
 # Find out if we are running in a child workflow by checking 
 
 # DEBUG BEGIN
+echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") CURRENT_JOB_ID: ${CURRENT_JOB_ID}" 
 echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") GITHUB_JOB: ${GITHUB_JOB}" 
 echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") GITHUB_WORKFLOW: ${GITHUB_WORKFLOW}" 
 echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") GITHUB_WORKFLOW_REF: ${GITHUB_WORKFLOW_REF}" 
