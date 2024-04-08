@@ -24,6 +24,8 @@ jobs:
 
   another_job: 
     runs-on: ubuntu-22.04
+    env:
+      CHUCK_DEBUG: ${{ github.ref }}
     steps:
       - name: Succeed
         shell: bash
