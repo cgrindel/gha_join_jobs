@@ -70,6 +70,10 @@ done
 api_url="/repos/${github_repository}/actions/runs/${github_run_id}/attempts/${github_run_attempt}/jobs"
 jobs_json="$( gh api --paginate "${api_url}" )"
 
+# DEBUG BEGIN
+echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") jobs_json: ${jobs_json}" 
+# DEBUG END
+
 # Retrieve the jobs of interest.
 filter_jobs_cmd=( get_filtered_jobs_json --current_job "${github_job}" --job_json "${jobs_json}" )
 [[ -n "${job_names:-}" ]] && filter_jobs_cmd+=( --job_names "${job_names}" )
