@@ -4,7 +4,7 @@ on:
   workflow_dispatch: # allows manual triggering
   workflow_call: # allows call from another workflow
     inputs:
-      github_ref:
+      checkout_ref:
         description: 'The GitHub reference to use for the checkout.'
         default: ''
         type: string
@@ -42,11 +42,12 @@ jobs:
     needs: [job1, job2, job3]
     if: ${{ always() }}
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-        with:
-          ref: ${{ inputs.github_ref }}
+      # - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      #   with:
+      #     ref: ${{ inputs.checkout_ref }}
       - uses: ./
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          checkout_ref: ${{ inputs.checkout_ref }}
 
 
