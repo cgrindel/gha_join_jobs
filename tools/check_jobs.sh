@@ -70,7 +70,10 @@ done
 api_url="/repos/${github_repository}/actions/runs/${github_run_id}/attempts/${github_run_attempt}/jobs"
 jobs_json="$( gh api --paginate "${api_url}" )"
 
+# Find out if we are running in a child workflow by checking 
+
 # DEBUG BEGIN
+echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") GITHUB_JOB: ${GITHUB_JOB}" 
 echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") GITHUB_WORKFLOW: ${GITHUB_WORKFLOW}" 
 echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") GITHUB_WORKFLOW_REF: ${GITHUB_WORKFLOW_REF}" 
 echo >&2 "*** CHUCK $(basename "${BASH_SOURCE[0]}") GITHUB_WORKFLOW_SHA: ${GITHUB_WORKFLOW_SHA}" 
