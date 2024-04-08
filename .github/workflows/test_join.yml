@@ -1,7 +1,8 @@
 name: Job Resolution Tests
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # allows manual triggering
+  workflow_call: # allows call from another workflow
 
 jobs:
   job1:
@@ -11,7 +12,6 @@ jobs:
       shell: bash
       run: |
         echo "Job 1"
-        # exit 1
 
   job2:
     runs-on: ubuntu-22.04
@@ -31,17 +31,6 @@ jobs:
       run: |
         echo "Job 3"
         exit 1
-
-  # all_tests:
-  #   runs-on: ubuntu-20.04
-  #   needs: [job1, job2]
-  #   if: ${{ always() }}
-  #   steps:
-  #     - uses: ./
-  #       with:
-  #         job_names: '["job1", "job2"]'
-  #         github_token: ${{ secrets.GITHUB_TOKEN }}
-
 
   all_tests:
     runs-on: ubuntu-22.04

@@ -19,6 +19,9 @@ jobs:
       run: |
         bazelisk test //...
 
+  workflow_with_its_own_join:
+    uses: ./.github/workflows/test_join.yml
+
   another_job: 
     runs-on: ubuntu-22.04
     steps:
@@ -29,7 +32,7 @@ jobs:
 
   all_tests:
     runs-on: ubuntu-22.04
-    needs: [ubuntu_build, another_job]
+    needs: [ubuntu_build, workflow_with_its_own_join, another_job]
     if: ${{ always() }}
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
