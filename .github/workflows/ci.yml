@@ -21,8 +21,8 @@ jobs:
 
   workflow_with_its_own_join:
     uses: ./.github/workflows/test_join.yml
-    # with:
-    #   github_ref: ${{ github.ref }}
+    with:
+      github_ref: ${{ github.ref }}
 
   another_job: 
     runs-on: ubuntu-22.04

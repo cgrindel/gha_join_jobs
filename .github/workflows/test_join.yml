@@ -44,7 +44,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
-          ref: ${{ $inputs.github_ref }}
+          ref: ${{ inputs.github_ref }}
       - uses: ./
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
