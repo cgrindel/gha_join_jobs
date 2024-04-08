@@ -5,7 +5,7 @@ on:
   workflow_call: # allows call from another workflow
     inputs:
       github_ref:
-        description: The GitHub reference to use for the checkout.
+        description: 'The GitHub reference to use for the checkout.'
         default: ''
         type: string
 
