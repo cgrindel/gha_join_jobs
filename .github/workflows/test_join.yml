@@ -2,11 +2,6 @@ name: Job Resolution Tests
 
 on:
   workflow_dispatch: # allows manual triggering
-    inputs:
-      github_ref:
-        description: The GitHub reference to use for the checkout.
-        default: ''
-        type: string
   workflow_call: # allows call from another workflow
     inputs:
       github_ref:
