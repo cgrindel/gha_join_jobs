@@ -18,11 +18,11 @@ inputs:
 runs:
   using: composite
   steps:
-    # - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-    #   with:
-    #     repository: cgrindel/gha_join_jobs
-    #     ref: ${{ inputs.checkout_ref }}
-    #     path: ${{ inputs.checkout_path }}
+    - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      with:
+        repository: cgrindel/gha_join_jobs
+        ref: ${{ inputs.checkout_ref }}
+        path: ${{ inputs.checkout_path }}
 
     - name: Check Previous Jobs
       shell: bash
