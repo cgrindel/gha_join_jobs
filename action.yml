@@ -30,6 +30,7 @@ runs:
         GHA_JOIN_JOBS_PATH: ${{ inputs.checkout_path }}
         GITHUB_TOKEN: ${{ inputs.github_token }}
         JOB_NAMES: ${{ inputs.job_names }}
+        CURRENT_JOB_ID: ${{ github.job }}
       run: |
         repo_dir="${PWD}"
         cd "${GHA_JOIN_JOBS_PATH}"
