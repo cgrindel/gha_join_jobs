@@ -18,7 +18,7 @@ jobs:
       # branches and tags. This is important if the workflow is launched via
       # workspace_dispatch event. It ensures that we can find the release tag
       # and the major version tag.
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           # Fetch all history for all branches and tags
           fetch-depth: 0
