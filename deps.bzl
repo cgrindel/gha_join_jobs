@@ -17,9 +17,9 @@ def gha_join_jobs_dependencies():
 
     http_archive(
         name = "cgrindel_bazel_starlib",
-        sha256 = "b05401644174f70467ee7ea823ea9e8033080bc5612c0bcc319a670fd43e5f32",
-        strip_prefix = "bazel-starlib-0.20.2",
+        sha256 = "b97a9121843b9f51ddadc909eb9cfdc38c7f7892d707c1245a9a134e827abfb2",
+        strip_prefix = "bazel-starlib-0.21.0",
         urls = [
-            "http://github.com/cgrindel/bazel-starlib/archive/v0.20.2.tar.gz",
+            "http://github.com/cgrindel/bazel-starlib/archive/v0.21.0.tar.gz",
         ],
     )
