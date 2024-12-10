@@ -7,32 +7,18 @@ inputs:
   github_token:
     description: The Github token to authenticate PR operations.
     required: true
-  checkout_ref:
-    type: string
-    default: v1
-  checkout_path:
-    type: string
-    default: .github/actions/gha_join_jobs
-
 
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      with:
-        repository: cgrindel/gha_join_jobs
-        ref: ${{ inputs.checkout_ref }}
-        path: ${{ inputs.checkout_path }}
-
     - name: Check Previous Jobs
       shell: bash
       env:
-        GHA_JOIN_JOBS_PATH: ${{ inputs.checkout_path }}
         GITHUB_TOKEN: ${{ inputs.github_token }}
         JOB_NAMES: ${{ inputs.job_names }}
       run: |
         repo_dir="${PWD}"
-        cd "${GHA_JOIN_JOBS_PATH}"
+        cd '${{ github.action_path }}'
         bazel_cmd=( bazelisk run //tools:check_jobs -- )
         [[ -n "${JOB_NAMES:-}" ]] && bazel_cmd+=( --job_names "${JOB_NAMES}" )
         "${bazel_cmd[@]}"
