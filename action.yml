@@ -16,6 +16,7 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
         JOB_NAMES: ${{ inputs.job_names }}
+        CURRENT_JOB_ID: ${{ github.job }}
       run: |
         repo_dir="${PWD}"
         cd '${{ github.action_path }}'
