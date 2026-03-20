@@ -9,7 +9,7 @@ is_item_in_json_array() {
       --arg item "${item}" \
       '$item | IN($list[])'
   )"
-  [[ "${contains_item}" == true ]] && return
+  [[ ${contains_item} == true ]] && return
   return 1
 }
 
@@ -29,7 +29,7 @@ get_filtered_jobs_json() {
         local job_names="${2}"
         shift 2
         ;;
-      *--)
+      --*)
         echo >&2 "Unrecognized flag. ${1}"
         return 1
         ;;
@@ -40,21 +40,21 @@ get_filtered_jobs_json() {
     esac
   done
 
-  [[ -z "${current_job:-}" ]] && echo >&2 "Expected a value for current_job." && return 1
-  [[ -z "${jobs_json:-}" ]] && echo >&2 "Expected a value for jobs_json." && return 1 
+  [[ -z ${current_job:-} ]] && echo >&2 "Expected a value for current_job." && return 1
+  [[ -z ${jobs_json:-} ]] && echo >&2 "Expected a value for jobs_json." && return 1
 
-  local jq_cmd=( jq )
+  local jq_cmd=(jq)
   local jq_src='.jobs | map(select(.name != "'"${current_job}"'"))'
-  if [[ -n "${job_names:-}" ]]; then
+  if [[ -n ${job_names:-} ]]; then
     # Ensure that job names does not contain our JOB name
-    is_item_in_json_array "${current_job}" "${job_names}" && \
-      echo >&2 "This job name (${current_job}) is included in your jobs list." && \
-      return 1
+    is_item_in_json_array "${current_job}" "${job_names}" \
+      && echo >&2 "This job name (${current_job}) is included in your jobs list." \
+      && return 1
 
     jq_src+=' | map(select(.name | IN($job_names[])))'
-    jq_cmd+=( --argjson job_names "${job_names}" )
+    jq_cmd+=(--argjson job_names "${job_names}")
   fi
-  jq_cmd+=( "${jq_src}" )
+  jq_cmd+=("${jq_src}")
   echo "${jobs_json}" | "${jq_cmd[@]}"
 }
 
@@ -67,7 +67,7 @@ all_jobs_concluded_with() {
   )"
 
   # If all are the same conclusion, then return success
-  [[ "${conclusion_check}" == true ]] && return
+  [[ ${conclusion_check} == true ]] && return
 
   # Otherwise, return failure
   return 1
@@ -75,6 +75,6 @@ all_jobs_concluded_with() {
 
 get_unsuccessful_jobs_summary() {
   local jobs_array_json="${1}"
-  echo "${jobs_array_json}" | \
-    jq 'map(select(.conclusion != "success")) | map({id, name, status, conclusion})'
+  echo "${jobs_array_json}" \
+    | jq 'map(select(.conclusion != "success")) | map({id, name, status, conclusion})'
 }

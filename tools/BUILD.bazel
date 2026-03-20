@@ -1,4 +1,5 @@
 load("@cgrindel_bazel_starlib//bzlformat:defs.bzl", "bzlformat_pkg")
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 
 bzlformat_pkg(name = "bzlformat")
 
@@ -7,8 +8,8 @@ sh_binary(
     srcs = ["check_jobs.sh"],
     deps = [
         "//libs:gh_actions_api_jq",
-        "@bazel_tools//tools/bash/runfiles",
         "@cgrindel_bazel_starlib//shlib/lib:env",
         "@cgrindel_bazel_starlib//shlib/lib:fail",
+        "@rules_shell//shell/runfiles",
     ],
 )
