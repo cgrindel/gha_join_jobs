@@ -8,8 +8,8 @@ sh_test(
     srcs = ["is_item_in_json_array_test.sh"],
     deps = [
         "//libs:gh_actions_api_jq",
-        "@bazel_tools//tools/bash/runfiles",
         "@cgrindel_bazel_starlib//shlib/lib:assertions",
+        "@rules_shell//shell/runfiles",
     ],
 )
 
@@ -21,8 +21,8 @@ sh_test(
     ],
     deps = [
         "//libs:gh_actions_api_jq",
-        "@bazel_tools//tools/bash/runfiles",
         "@cgrindel_bazel_starlib//shlib/lib:assertions",
+        "@rules_shell//shell/runfiles",
     ],
 )
 
@@ -31,8 +31,8 @@ sh_test(
     srcs = ["all_jobs_concluded_with_test.sh"],
     deps = [
         "//libs:gh_actions_api_jq",
-        "@bazel_tools//tools/bash/runfiles",
         "@cgrindel_bazel_starlib//shlib/lib:assertions",
+        "@rules_shell//shell/runfiles",
     ],
 )
 
@@ -41,7 +41,7 @@ sh_test(
     srcs = ["get_unsuccessful_jobs_summary_test.sh"],
     deps = [
         "//libs:gh_actions_api_jq",
-        "@bazel_tools//tools/bash/runfiles",
         "@cgrindel_bazel_starlib//shlib/lib:assertions",
+        "@rules_shell//shell/runfiles",
     ],
 )
